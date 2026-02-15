@@ -19,7 +19,7 @@ class _MiCronometroState extends State<MiCronometro>{
   @override
   void initState() {
     super.initState();
-    print("initState llamado");
+    //print("initState llamado");
     ///Ejemplo de recurso que necesita ser cerrado
     iniciarTimer();
   }
@@ -27,26 +27,26 @@ class _MiCronometroState extends State<MiCronometro>{
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    print("didChangeDependencies llamado");
+    //print("didChangeDependencies llamado");
   }
 
   @override
   void deactivate() {
     super.deactivate();
-    print("deactivated llamado");
+    //print("deactivated llamado");
   }
 
   @override
   void dispose() {
     super.dispose();
     _timer.cancel();
-    print("dispose llamado");
+    //print("dispose llamado");
   }
 
   @override void didUpdateWidget(covariant MiCronometro oldWidget) {
     
     super.didUpdateWidget(oldWidget);
-    print("didUpdateWidget llamado");
+    //print("didUpdateWidget llamado");
   }
 
   @override 
@@ -70,60 +70,70 @@ class _MiCronometroState extends State<MiCronometro>{
         mainAxisAlignment: MainAxisAlignment.center,
         children:[
           Text("El tiempo: "),
-          Row(
-            spacing: 5,
-            children: [
-              Animateddigits(value: horas.toString().padLeft(2, '0')),
-              StableCharacter(value: ':'),
-              Animateddigits(value: minutos.toString().padLeft(2, '0')),
-              StableCharacter(value: ':'),
-              Animateddigits(value: segundos.toString().padLeft(2, '0')),
-          ],),
-          //Text("${horas.toString().padLeft(2,'0')} : ${minutos.toString().padLeft(2,'0')} : ${segundos.toString().padLeft(2,'0')}"),
-          Row(
-            children: [
-              CupertinoButton(
-                child: Text("Parar"), 
-                onPressed: (){
-                   _timer.cancel();
-                }
-              ),
-              CupertinoButton(
-                child: Text("Volver a 0"), 
-                onPressed: (){
-                  _timer.cancel();
-                  setState(() {
-                    horas = 0;
-                    minutos = 0;
-                    segundos = 0;  
-                  });
-                  
-                })
-            ],
+          Center(child: 
+            Row(
+              spacing: 5,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Animateddigits(value: horas.toString().padLeft(2, '0')),
+                StableCharacter(value: ':'),
+                Animateddigits(value: minutos.toString().padLeft(2, '0')),
+                StableCharacter(value: ':'),
+                Animateddigits(value: segundos.toString().padLeft(2, '0')),
+              ],
+            ),
           ),
-          Row(
-            children: [
-              CupertinoButton(
-                child: Text("Reiniciar"), 
-                onPressed: (){
-                  _timer.cancel();
-                  setState(() {
-                    horas = 0;
-                    minutos = 0;
-                    segundos = 0;  
-                  });
-                  _timer = Timer.periodic(Duration(seconds: 1), (t) => iniciarCronometro());
-
-                }),
+          //Text("${horas.toString().padLeft(2,'0')} : ${minutos.toString().padLeft(2,'0')} : ${segundos.toString().padLeft(2,'0')}"),
+          Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
                 CupertinoButton(
-                  child: Text("Empezar"),
-                  onPressed: () {
+                  child: Text("Parar"), 
+                  onPressed: (){
                     _timer.cancel();
-                    iniciarTimer();
-                  },
-                )
-            ],
-          )
+                  }
+                ),
+                CupertinoButton(
+                  child: Text("Volver a 0"), 
+                  onPressed: (){
+                    _timer.cancel();
+                    setState(() {
+                      horas = 0;
+                      minutos = 0;
+                      segundos = 0;  
+                    });
+                    
+                  })
+              ],
+            ),
+          ),
+          Center(
+             child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CupertinoButton(
+                  child: Text("Reiniciar"), 
+                  onPressed: (){
+                    _timer.cancel();
+                    setState(() {
+                      horas = 0;
+                      minutos = 0;
+                      segundos = 0;  
+                    });
+                    _timer = Timer.periodic(Duration(seconds: 1), (t) => iniciarCronometro());
+
+                  }),
+                  CupertinoButton(
+                    child: Text("Empezar"),
+                    onPressed: () {
+                      _timer.cancel();
+                      iniciarTimer();
+                    },
+                  )
+              ],
+            )
+          ),
         ]
       
       )
