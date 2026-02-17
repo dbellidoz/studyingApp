@@ -50,6 +50,7 @@ class _MicontenedorCentradoState extends State<MicontenedorCentrado> {
     _horasController.dispose();
     _minutosController.dispose();
     _segundosController.dispose();
+
     super.dispose();
   }
 
@@ -65,6 +66,7 @@ class _MicontenedorCentradoState extends State<MicontenedorCentrado> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Formulario a la izquierda
+            if(!_iniciado)
             Expanded(
               child: Recogedatostempo(
                 horas: _horasController,
@@ -85,9 +87,13 @@ class _MicontenedorCentradoState extends State<MicontenedorCentrado> {
             if (_iniciado)
               Expanded(
                 child: PomodoroTimerWidget(
-                  horas: _horas,
-                  minutos: _minutos,
-                  segundos: _segundos,
+                  workingHoras: _horas,
+                  workingMinutos: _minutos,
+                  workingSegundos: _segundos,
+                  restingHoras: 0,
+                  restingMinutos: 0,
+                  restingSegundos: 5,
+                  veces: 2,
                 ),
               ),
           ],

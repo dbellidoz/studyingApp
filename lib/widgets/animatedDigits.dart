@@ -4,10 +4,12 @@ import 'package:google_fonts/google_fonts.dart';
 class Animateddigits extends StatelessWidget{
   final String value;
   final double fontSize;
+  final bool? working;
 
   const Animateddigits({
     super.key,
     required this.value,
+    this.working,
     this.fontSize = 32,
   });
 
@@ -31,7 +33,14 @@ class Animateddigits extends StatelessWidget{
       child: Text(
         value,
         key: ValueKey(value),
-        style: GoogleFonts.lato(fontSize: fontSize),
+        style: GoogleFonts.lato(
+          fontSize: fontSize,
+          color: switch (working) {
+            true => Colors.red,
+            false => Colors.green,
+            null => Colors.black12
+          }),
+        
       ),
     );
 

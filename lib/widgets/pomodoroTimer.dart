@@ -1,37 +1,79 @@
-import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:miprimeraapp/widgets/animatedDigits.dart';
 import 'package:miprimeraapp/widgets/stableCharacter.dart';
 import 'package:miprimeraapp/widgets/tempo.dart';
 
+// ignore: must_be_immutable
 class PomodoroTimerWidget extends StatefulWidget {
-    final int horas;
-  final int minutos;
-  final int segundos;
+  final int workingHoras;
+  final int workingMinutos;
+  final int workingSegundos;
+  final int restingHoras;
+  final int restingMinutos;
+  final int restingSegundos;
+  int veces;
+  bool working = true;
 
-  const PomodoroTimerWidget({
-    super.key, required this.horas, required this.minutos, required this.segundos
-  }); 
+  PomodoroTimerWidget({
+    super.key,
+    required this.workingHoras,
+    required this.workingMinutos,
+    required this.workingSegundos,
+    required this.restingHoras,
+    required this.restingMinutos,
+    required this.restingSegundos,
+    required this.veces,
+  });
 
   @override
   _PomodoroTimerWidgetState createState() => _PomodoroTimerWidgetState();
 }
 
-class _PomodoroTimerWidgetState extends State<PomodoroTimerWidget>{
+class _PomodoroTimerWidgetState extends State<PomodoroTimerWidget> {
   late Tempo temporizador;
-  
-  void initState(){
+
+  void initState() {
     super.initState();
-    temporizador = Tempo(
-      horas: widget.horas, 
-      minutos: widget.minutos, 
-      segundos: widget.segundos
-    );
-    temporizador.iniciarTemporizador(()=>setState(() {}));
+    if (widget.working) {
+      print("pasamos a working");
+      startTempo(
+        widget.workingHoras,
+        widget.workingMinutos,
+        widget.workingSegundos,
+      );
+    } else {
+      print("pasamos a resting");
+      startTempo(
+        widget.restingHoras,
+        widget.restingMinutos,
+        widget.restingSegundos,
+      );
+    }
   }
 
+  void startTempo(int horas, int minutos, int segundos) {
+    temporizador = Tempo(horas: horas, minutos: minutos, segundos: segundos);
+    temporizador.iniciarTemporizador(() { 
+      setState(() {});
+      if (temporizador.isFinished) {
+        if (widget.veces > 0) {
+          widget.veces--;
+          widget.working = !widget.working;
+          if (widget.working) {
+            startTempo(
+              widget.workingHoras,
+              widget.workingMinutos,
+              widget.workingSegundos,
+            );
+          }else{
+              startTempo(widget.restingHoras, widget.restingMinutos, widget.restingSegundos);
+          }
+        }
+      }
+  });
+  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -42,28 +84,29 @@ class _PomodoroTimerWidgetState extends State<PomodoroTimerWidget>{
         color: const Color.fromARGB(228, 248, 244, 244),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(
-            color: Colors.brown,
-            blurRadius: 8,
-            offset: Offset(0, 4)
-          )
-        ]
+          BoxShadow(color: Colors.brown, blurRadius: 8, offset: Offset(0, 4)),
+        ],
       ),
-      child:Row(
+      child: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
-        children:[
-          Animateddigits(value: temporizador.horas.toString().padLeft(2, '0')),
+        children: [
+          Animateddigits(
+            value: temporizador.horas.toString().padLeft(2, '0'),
+            working: widget.working,
+          ),
           StableCharacter(value: ':'),
-          Animateddigits(value: temporizador.minutos.toString().padLeft(2, '0')),
+          Animateddigits(
+            value: temporizador.minutos.toString().padLeft(2, '0'),
+            working: widget.working,
+          ),
           StableCharacter(value: ':'),
-          Animateddigits(value: temporizador.segundos.toString().padLeft(2, '0')),
-        ]
-      )
-     ) ;
+          Animateddigits(
+            value: temporizador.segundos.toString().padLeft(2, '0'),
+            working: widget.working,
+          ),
+        ],
+      ),
+    );
   }
-
-
-
-
 }
