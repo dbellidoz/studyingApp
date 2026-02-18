@@ -1,19 +1,44 @@
 import 'package:flutter/material.dart';
 
-class Recogedatostempo extends StatelessWidget {
-  final TextEditingController horas;
-  final TextEditingController minutos;
-  final TextEditingController segundos;
+// ignore: must_be_immutable
+class Recogedatostempo extends StatefulWidget {
+  final TextEditingController horasWorking;
+  final TextEditingController minutosWorking;
+  final TextEditingController segundosWorking;
+  final TextEditingController horasResting;
+  final TextEditingController minutosResting;
+  final TextEditingController segundosResting;
 
   final VoidCallback onStart;
 
-  Recogedatostempo({
-    required this.horas,
-    required this.minutos,
-    required this.segundos,
-    required this.onStart
-  });
   
+
+  Recogedatostempo({
+    super.key, 
+    required this.horasWorking,
+    required this.minutosWorking,
+    required this.segundosWorking,
+    required this.horasResting,
+    required this.minutosResting,
+    required this.segundosResting,
+    required this.onStart,
+  });
+  @override
+  _RecogedatostempoState createState() => _RecogedatostempoState();
+}
+
+@override
+class _RecogedatostempoState extends State<Recogedatostempo> {
+
+  int pagina = 1;
+  void siguienteSlide() {
+    setState(() => pagina++); 
+  }
+
+  void anteriorSlide() {
+    setState(() => pagina--);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,39 +48,65 @@ class Recogedatostempo extends StatelessWidget {
         color: const Color.fromARGB(228, 248, 244, 244),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(
-            color: Colors.black,
-            blurRadius: 8,
-            offset: Offset(0, 4)
-          )
-        ]
+          BoxShadow(color: Colors.black, blurRadius: 8, offset: Offset(0, 4)),
+        ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(child: TextField(
-            controller: horas,
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(labelText: "Horas"),
-            )), 
-            Expanded(child:TextField(
-              controller: minutos,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: "Minutos"),
-            )),
-            Expanded(child:TextField(
-              controller: segundos,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: "Segundos"),
-            )),
+          if (pagina <= 1) ...[
+            Expanded(
+              child: TextField(
+                controller: widget.horasWorking,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: "Horas"),
+              ),
+            ),
+            Expanded(
+              child: TextField(
+                controller: widget.minutosWorking,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: "Minutos"),
+              ),
+            ),
+            Expanded(
+              child: TextField(
+                controller: widget.segundosWorking,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: "Segundos"),
+              ),
+            ),
             SizedBox(height: 20),
-            ElevatedButton(onPressed: onStart, child: Text("Empezar"))
-        ]
-      )
+            ElevatedButton(onPressed: siguienteSlide, child: Text("Siguiente")),
+          ],
+          if (pagina == 2) ...[
+            Expanded(
+              child: TextField(
+                controller: widget.horasResting,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: "Horas"),
+              ),
+            ),
+            Expanded(
+              child: TextField(
+                controller: widget.minutosResting,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: "Minutos"),
+              ),
+            ),
+            Expanded(
+              child: TextField(
+                controller: widget.segundosResting,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(labelText: "Segundos"),
+              ),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(onPressed: anteriorSlide, child: Text("Anterior")),
+            ElevatedButton(onPressed: widget.onStart, child: Text("Empezar")),
+          ]
+        ],
+      ),
     );
   }
-
-  
-
-
 }

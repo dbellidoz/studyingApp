@@ -13,6 +13,7 @@ class PomodoroTimerWidget extends StatefulWidget {
   final int restingMinutos;
   final int restingSegundos;
   int veces;
+  final VoidCallback onEnd;
   bool working = true;
 
   PomodoroTimerWidget({
@@ -24,6 +25,7 @@ class PomodoroTimerWidget extends StatefulWidget {
     required this.restingMinutos,
     required this.restingSegundos,
     required this.veces,
+    required this.onEnd
   });
 
   @override
@@ -69,6 +71,8 @@ class _PomodoroTimerWidgetState extends State<PomodoroTimerWidget> {
           }else{
               startTempo(widget.restingHoras, widget.restingMinutos, widget.restingSegundos);
           }
+        }else{
+          widget.onEnd();
         }
       }
   });

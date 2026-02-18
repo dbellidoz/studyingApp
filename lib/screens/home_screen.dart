@@ -40,9 +40,16 @@ class _MicontenedorCentradoState extends State<MicontenedorCentrado> {
   final TextEditingController _minutosController = TextEditingController();
   final TextEditingController _segundosController = TextEditingController();
 
+final TextEditingController _horasRestingController = TextEditingController();
+final TextEditingController _minutosRestingController = TextEditingController();
+final TextEditingController _segundosRestingController = TextEditingController();
+
   int _horas = 0;
   int _minutos = 0;
   int _segundos = 0;
+  int _horasResting = 0;
+  int _minutosResting = 0;
+  int _segundosResting = 0;
   bool _iniciado = false;
 
   @override
@@ -69,14 +76,20 @@ class _MicontenedorCentradoState extends State<MicontenedorCentrado> {
             if(!_iniciado)
             Expanded(
               child: Recogedatostempo(
-                horas: _horasController,
-                minutos: _minutosController,
-                segundos: _segundosController,
+                horasWorking: _horasController,
+                minutosWorking: _minutosController,
+                segundosWorking: _segundosController,
+                horasResting: _horasRestingController,
+                minutosResting: _minutosRestingController,
+                segundosResting: _segundosRestingController, 
                 onStart: () {
                   setState(() {
                     _horas = int.tryParse(_horasController.text) ?? 0;
                     _minutos = int.tryParse(_minutosController.text) ?? 0;
                     _segundos = int.tryParse(_segundosController.text) ?? 0;
+                    _horasResting = int.tryParse(_horasRestingController.text) ?? 0;
+                    _minutosResting = int.tryParse(_minutosRestingController.text) ?? 0;
+                    _segundosResting = int.tryParse(_segundosRestingController.text) ?? 0;
                     _iniciado = true;
                   });
                 },
@@ -90,10 +103,15 @@ class _MicontenedorCentradoState extends State<MicontenedorCentrado> {
                   workingHoras: _horas,
                   workingMinutos: _minutos,
                   workingSegundos: _segundos,
-                  restingHoras: 0,
-                  restingMinutos: 0,
-                  restingSegundos: 5,
+                  restingHoras: _horasResting,
+                  restingMinutos: _minutosResting,
+                  restingSegundos: _segundosResting,
                   veces: 2,
+                  onEnd: (){
+                    setState(() {
+                      _iniciado = !_iniciado;
+                    });
+                  },
                 ),
               ),
           ],
