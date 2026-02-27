@@ -40,9 +40,11 @@ class _MicontenedorCentradoState extends State<MicontenedorCentrado> {
   final TextEditingController _minutosController = TextEditingController();
   final TextEditingController _segundosController = TextEditingController();
 
-final TextEditingController _horasRestingController = TextEditingController();
-final TextEditingController _minutosRestingController = TextEditingController();
-final TextEditingController _segundosRestingController = TextEditingController();
+  final TextEditingController _horasRestingController = TextEditingController();
+  final TextEditingController _minutosRestingController =
+      TextEditingController();
+  final TextEditingController _segundosRestingController =
+      TextEditingController();
 
   int _horas = 0;
   int _minutos = 0;
@@ -69,37 +71,36 @@ final TextEditingController _segundosRestingController = TextEditingController()
         backgroundColor: Color.fromARGB(255, 3, 26, 27),
       ),
       body: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Formulario a la izquierda
-            if(!_iniciado)
-            Expanded(
-              child: Recogedatostempo(
-                horasWorking: _horasController,
-                minutosWorking: _minutosController,
-                segundosWorking: _segundosController,
-                horasResting: _horasRestingController,
-                minutosResting: _minutosRestingController,
-                segundosResting: _segundosRestingController, 
-                onStart: () {
-                  setState(() {
-                    _horas = int.tryParse(_horasController.text) ?? 0;
-                    _minutos = int.tryParse(_minutosController.text) ?? 0;
-                    _segundos = int.tryParse(_segundosController.text) ?? 0;
-                    _horasResting = int.tryParse(_horasRestingController.text) ?? 0;
-                    _minutosResting = int.tryParse(_minutosRestingController.text) ?? 0;
-                    _segundosResting = int.tryParse(_segundosRestingController.text) ?? 0;
-                    _iniciado = true;
-                  });
-                },
-              ),
-            ),
-            SizedBox(width: 20),
-            // Temporizador a la derecha
-            if (_iniciado)
-              Expanded(
-                child: PomodoroTimerWidget(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize:
+                MainAxisSize.min, // <-- clave: solo ocupa lo necesario
+            children: [
+              if (!_iniciado)
+                Recogedatostempo(
+                  horasWorking: _horasController,
+                  minutosWorking: _minutosController,
+                  segundosWorking: _segundosController,
+                  horasResting: _horasRestingController,
+                  minutosResting: _minutosRestingController,
+                  segundosResting: _segundosRestingController,
+                  onStart: () {
+                    setState(() {
+                      _horas = int.tryParse(_horasController.text) ?? 0;
+                      _minutos = int.tryParse(_minutosController.text) ?? 0;
+                      _segundos = int.tryParse(_segundosController.text) ?? 0;
+                      _horasResting =
+                          int.tryParse(_horasRestingController.text) ?? 0;
+                      _minutosResting =
+                          int.tryParse(_minutosRestingController.text) ?? 0;
+                      _segundosResting =
+                          int.tryParse(_segundosRestingController.text) ?? 0;
+                      _iniciado = true;
+                    });
+                  },
+                ),
+              if (_iniciado)
+                PomodoroTimerWidget(
                   workingHoras: _horas,
                   workingMinutos: _minutos,
                   workingSegundos: _segundos,
@@ -107,14 +108,14 @@ final TextEditingController _segundosRestingController = TextEditingController()
                   restingMinutos: _minutosResting,
                   restingSegundos: _segundosResting,
                   veces: 2,
-                  onEnd: (){
+                  onEnd: () {
                     setState(() {
                       _iniciado = !_iniciado;
                     });
                   },
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -88,7 +88,15 @@ class _PomodoroTimerWidgetState extends State<PomodoroTimerWidget> {
         color: const Color.fromARGB(228, 248, 244, 244),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(color: Colors.brown, blurRadius: 8, offset: Offset(0, 4)),
+          BoxShadow(
+            color: switch (widget.working) {
+            true => Colors.red,
+            false => Colors.green,
+            //null => Colors.black12
+          },
+            blurRadius: 8, 
+            offset: Offset(0, 4)
+          ),
         ],
       ),
       child: Row(
