@@ -59,8 +59,11 @@ class _PomodoroTimerWidgetState extends State<PomodoroTimerWidget> {
     temporizador.iniciarTemporizador(() { 
       setState(() {});
       if (temporizador.isFinished) {
-        if (widget.veces > 0) {
-          widget.veces--;
+        if (widget.veces > 1) {
+          if (!widget.working){
+            widget.veces--;
+          }
+          
           widget.working = !widget.working;
           if (widget.working) {
             startTempo(

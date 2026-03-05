@@ -7,6 +7,7 @@ class Recogedatostempo extends StatefulWidget {
   final TextEditingController horasResting;
   final TextEditingController minutosResting;
   final TextEditingController segundosResting;
+  final TextEditingController veces;
   final VoidCallback onStart;
 
   Recogedatostempo({
@@ -17,6 +18,7 @@ class Recogedatostempo extends StatefulWidget {
     required this.horasResting,
     required this.minutosResting,
     required this.segundosResting,
+    required this.veces,
     required this.onStart,
   });
 
@@ -33,7 +35,7 @@ class _RecogedatostempoState extends State<Recogedatostempo> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.6, // 60% del ancho
+      //width: MediaQuery.of(context).size.width * 0.6, // 60% del ancho
       padding: EdgeInsets.all(20),
       margin: EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -46,6 +48,7 @@ class _RecogedatostempoState extends State<Recogedatostempo> {
       child: switch (pagina) {
         1 => _paginaWorking(),
         2 => _paginaResting(),
+        3 => _paginaVeces(),
         _ => SizedBox(),
       },
     );
@@ -106,6 +109,30 @@ class _RecogedatostempoState extends State<Recogedatostempo> {
           decoration: InputDecoration(labelText: "Segundos"),
         ),
         SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            ElevatedButton(onPressed: anteriorSlide, child: Text("Anterior")),
+            ElevatedButton(onPressed: siguienteSlide, child: Text("Siguiente")),
+          ],
+        ),
+      ]
+    );
+  }
+
+  Widget _paginaVeces() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text("Ciclos", style: TextStyle(fontWeight: FontWeight.bold)),
+        SizedBox(height: 10),
+        TextField(
+          controller: widget.veces,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            labelText: "Cuántas veces quieres que se repita",
+          ),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
