@@ -29,6 +29,7 @@ class MicontenedorCentrado extends StatelessWidget{
 import 'package:flutter/material.dart';
 import 'package:miprimeraapp/widgets/recogedatostempo.dart';
 import 'package:miprimeraapp/widgets/pomodoroTimer.dart';
+import 'package:miprimeraapp/widgets/to_doList.dart';
 
 class MicontenedorCentrado extends StatefulWidget {
   @override
@@ -114,6 +115,10 @@ class _MicontenedorCentradoState extends State<MicontenedorCentrado> {
                     });
                   },
                 ),
+              SizedBox(
+                width: 400, // ← ancho fijo razonable
+                child: To_doList(),
+              ),
             ],
           ),
         ),
